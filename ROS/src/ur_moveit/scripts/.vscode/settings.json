@@ -1,0 +1,5 @@
+{
+	"python.pythonPath": "/home/jeyanth/miniconda3/envs/thesis/bin/python",
+    "python.jediEnabled": false,
+    "python.languageServer": "Microsoft"
+}

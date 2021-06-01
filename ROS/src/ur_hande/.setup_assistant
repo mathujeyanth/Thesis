@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: ur_urdf
+    relative_path: ur_handE.urdf
+    xacro_args: ""
+  SRDF:
+    relative_path: config/ur.srdf
+  CONFIG:
+    author_name: Mathu Jeyanth
+    author_email: mathujeyanth@hotmail.dk
+    generated_timestamp: 1620073257

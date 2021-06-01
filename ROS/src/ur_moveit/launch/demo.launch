@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<launch>
+  <?ur3_gripper_ignore
+  <arg name="urdf_path" default="$(find ur_moveit)/URDF/ur3_with_gripper.urdf"/>
+
+  <!-- send robot urdf to param server -->
+  <param name="robot_description" textfile="$(arg urdf_path)" />
+
+  <!-- Load controller settings -->
+  <include file="$(find ur_moveit)/launch/ros_controllers.launch"/>
+
+  <!-- start this controller -->
+  <rosparam file="$(find ur_moveit)/config/ros_controllers.yaml" command="load"/>
+
+  <!-- Launch moveit -->
+  <include file="$(find ur_moveit)/launch/move_group.launch"></include>
+  ?>
+
+
+
+  <?move_it_ur3e
+  <arg name="urdf_path" default="$(find ur_moveit)/URDF/ur_handE.urdf"/>
+
+  <!-- send robot urdf to param server -->
+  <param name="robot_description" textfile="$(arg urdf_path)" />
+
+  <!-- Load controller settings -->
+  <include file="$(find ur_hande)/launch/ros_controllers.launch"/>
+  <!-- Load joint controller -->
+  <node pkg="joint_state_publisher" type="joint_state_publisher" name="joint_state_publisher" output="screen">
+    <param name="publish_frequency" type="double" value="50.0" />
+    <rosparam param="/source_list"> [/arm_controller/joint_states] </rosparam>
+  </node>
+
+  <!-- start this controller -->
+  <rosparam file="$(find ur_hande)/config/ros_controllers.yaml" command="load"/>
+
+  <!-- Allowed joint-value tolerance for validation that trajectorys first point matches current robot state -->
+  <param name="trajectory_execution/allowed_start_tolerance" value="0.01"/> <!-- default 0.01 -->
+  <!-- Params for 3D sensors config -->
+  <rosparam command="load" file="$(find ur_hande)/config/sensors_3d.yaml" />
+  <!-- Launch moveit -->
+  <include file="$(find ur_hande)/launch/move_group.launch"></include>
+  ?>
+
+  <?move_it_ur5e
+  ?>
+  <arg name="urdf_path" default="$(find ur_moveit)/URDF/ur5e_hande.urdf"/>
+
+  <!-- send robot urdf to param server -->
+  <param name="robot_description" textfile="$(arg urdf_path)" />
+
+  <!-- Load controller settings -->
+  <include file="$(find ur5e_hande)/launch/ros_controllers.launch"/>
+  <!-- Load joint controller -->
+  <node pkg="joint_state_publisher" type="joint_state_publisher" name="joint_state_publisher" output="screen">
+    <param name="publish_frequency" type="double" value="50.0" />
+    <rosparam param="/source_list"> [/arm_controller/joint_states] </rosparam>
+  </node>
+
+  <!-- start this controller -->
+  <rosparam file="$(find ur5e_hande)/config/ros_controllers.yaml" command="load"/>
+
+  <!-- Allowed joint-value tolerance for validation that trajectorys first point matches current robot state -->
+  <param name="trajectory_execution/allowed_start_tolerance" value="0.01"/> <!-- default 0.01 -->
+  <!-- Params for 3D sensors config -->
+  <rosparam command="load" file="$(find ur5e_hande)/config/sensors_3d.yaml" />
+  <!-- Launch moveit -->
+  <include file="$(find ur5e_hande)/launch/move_group.launch"></include>
+
+
+  <?ur3e_ignore
+  <!--<arg name="urdf_path" default="$(find ur_description)/urdf/ur3e.urdf"/>-->
+  <!--<arg name="urdf_path" default="$(find ur_moveit)/URDF/ur.urdf"/>-->
+  <arg name="urdf_path" default="$(find ur_moveit)/URDF/ur_handE.urdf"/>
+
+  <!-- send robot urdf to param server -->
+  <param name="robot_description" textfile="$(arg urdf_path)" />
+
+  <!-- Load controller settings -->
+  <include file="$(find ur3e_moveit_config)/launch/ros_controllers.launch"/>
+  <!-- Load joint controller -->
+  <node pkg="joint_state_publisher" type="joint_state_publisher" name="joint_state_publisher" output="screen">
+    <param name="publish_frequency" type="double" value="50.0" />
+    <rosparam param="/source_list"> [/arm_controller/joint_states] </rosparam>
+  </node>
+
+  <!-- start this controller -->
+  <rosparam file="$(find ur3e_moveit_config)/config/ros_controllers.yaml" command="load"/>
+
+  <!-- Allowed joint-value tolerance for validation that trajectorys first point matches current robot state -->
+  <param name="trajectory_execution/allowed_start_tolerance" value="0.01"/> <!-- default 0.01 -->
+  <!-- Params for 3D sensors config -->
+  <rosparam command="load" file="$(find ur_moveit)/config/sensors_3d.yaml" />
+  <!-- Launch moveit -->
+  <include file="$(find ur3e_moveit_config)/launch/move_group.launch"></include>
+  ?>
+
+
+  <?ignore
+  <!--Convert joint states to /tf tranforms-->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
+  <!-- spawn controller manager -->
+  <node name="ros_control_controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+    output="screen" args="joint_state_controller scaled_pos_joint_traj_controller speed_scaling_state_controller force_torque_sensor_controller" />
+
+  <!-- load other controller -->
+  <node name="ros_control_stopped_spawner" pkg="controller_manager" type="spawner" respawn="false"
+    output="screen" args="--stopped pos_joint_traj_controller joint_group_vel_controller" />
+  <node name="arm_controller_spawner" pkg="controller_manager" type="controller_manager" args="spawn arm_controller" respawn="false" output="screen"/>
+  <!-- load control managers -->
+  <!--<node name="ros_control_controller_manager" pkg="controller_manager" type="controller_manager" respawn="false" output="screen" args="load joint_group_position_controller" />-->
+  ?>
+</launch>

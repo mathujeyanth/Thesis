@@ -1,0 +1,8 @@
+Header Header
+float64 grip
+geometry_msgs/Vector3 gripper2target_position
+geometry_msgs/Quaternion gripper2target_rotation
+geometry_msgs/Vector3 gripper_position
+geometry_msgs/Quaternion gripper_rotation
+geometry_msgs/Vector3 linear_velocity
+geometry_msgs/Quaternion angular_velocity

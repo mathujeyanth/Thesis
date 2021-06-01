@@ -1,0 +1,4 @@
+<launch>
+    <rosparam file="$(find robotics_demo)/config/params.yaml" command="load"/>
+    <node pkg="robotics_demo" name="server_endpoint" type="server_endpoint.py" args="--wait" output="screen" respawn="true" />
+</launch>

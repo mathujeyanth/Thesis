@@ -1,0 +1,6 @@
+#[submodule "Unity-Robotics-Hub"]
+#	path = Unity-Robotics-Hub
+#	url = https://github.com/Unity-Technologies/Unity-Robotics-Hub.git
+#[submodule "ml-agents"]
+#	path = ml-agents
+#	url = https://github.com/Unity-Technologies/ml-agents.git

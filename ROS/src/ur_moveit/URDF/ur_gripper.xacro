@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="ur">
+
+  <!-- ur5 -->
+  <!-- end-effector -->
+  <xacro:include filename="$(find ur_description)/urdf/ur5e.xacro" />
+  <xacro:include filename="$(find robotiq_hande_gripper_description)/urdf/robotiq_hande.urdf.xacro"/>
+  <!--<xacro:include filename="$(find robotiq_2f_140_gripper_visualization)/urdf/robotiq_arg2f_140_model.xacro"/>-->
+
+  <!-- ur5 -->
+  <!-- The ur5 xacro must be included with passing parameters -->
+  <!--<xacro:ur3_robot prefix="" joint_limited="true"/>-->
+  <xacro:robotiq_hande prefix="" MAC=""/>
+  <!-- create the robot + eef combo itself as a macro -->
+  <xacro:macro name="measurement_tool_joint" params="prefix">
+
+    <!-- instantiate UR and gripper -->
+    <!--<xacro:ur3e_robot prefix="${prefix}robot_"/>
+    <xacro:robotiq_arg2f_140 prefix="${prefix}gripper_" />-->
+
+    <!-- attach gripper -->
+    <joint name="${prefix}tool0-robotiq_hande_base_to_${prefix}right_finger" type="fixed">
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <parent link="${prefix}tool0" />
+      <child link="${prefix}robotiq_hande_base_link" />
+    </joint>
+  </xacro:macro>
+  <xacro:measurement_tool_joint prefix=""/>
+
+
+  <!-- define the ur5's position and orientation in the world coordinate system -->
+  <link name="world" />
+  <joint name="world_joint" type="fixed">
+    <parent link="world" />
+    <child link="base_link" /> <!-- TODO: check base_link name of robot -->
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+  </joint>
+</robot>

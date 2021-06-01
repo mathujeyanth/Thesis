@@ -1,0 +1,11 @@
+<launch>
+    <rosparam file="$(find ur_moveit)/config/params.yaml" command="load"/>
+	<?ignore
+	?>
+    <node name="action_server" pkg="ur_moveit" type="action_server.py" args="--wait" output="screen" respawn="true" respawn_delay="2.0"/>
+    <!--<include file="$(find ur_moveit)/launch/demo.launch" />-->
+    <include file="$(find ur_moveit)/launch/ur5e_hande.launch" />
+    <node name="server_endpoint" pkg="ur_moveit" type="server_endpoint.py" args="--wait" output="screen" respawn="true" />
+    <node name="mover" pkg="ur_moveit" type="mover.py" args="--wait" output="screen" respawn="true" respawn_delay="2.0"/>
+    <node name="action_client" pkg="ur_moveit" type="action_client.py" args="--wait" output="screen" respawn="true" respawn_delay="2.0"/>
+</launch>
